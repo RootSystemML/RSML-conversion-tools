@@ -38,10 +38,17 @@ def plot3d(g, color=None, img_dir='.'):
 
     def sweep(vid):
         _color = pgl.Material(color(vid))
-        if diams:
-            _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                             section, 
-                             pgl.Point2Array(zip(diams[vid],diams[vid])))
+        if diams and (vid in diams):
+            diameters = diams[vid]
+            if isinstance(diameters, (list, tuple)):
+                _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
+                                section, 
+                                pgl.Point2Array(zip(diams[vid],diams[vid])))
+            else:
+                _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
+                                section, 
+                                pgl.Point2Array([(diameters,diameters) for i in range(len(geoms))]))
+
         else:
             _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
                              section)
@@ -49,6 +56,7 @@ def plot3d(g, color=None, img_dir='.'):
         return pgl.Shape(_geom, _color)
     scene = pgl.Scene([sweep(i) for i  in geoms])
     pgl.Viewer.display(scene)
+    return scene
 
 def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, clear=True, **args):
     """ Plot MTG with grains on the initial image.
@@ -114,15 +122,5 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
             
         _color = color(v) if color else colors[_order%len(colors)]##.get(_order,'r')
         poly = np.array(polylines[v])          
-        plot_fct(poly[:,0], poly[:,1], color=_color, marker='o')
-
-        x, y = poly[:,0], poly[:,1]
-
-        ms=args.pop('ms',4)
-
-        if axis:
-            axis.plot(x,y, color=_color, marker='o', ms=ms, **args)
-        else:
-            pplot(x,y, color=_color, marker='o', ms=4, **args)
-
+        plot_fct(poly[:,0], poly[:,1], color=_color, marker='.')
 
