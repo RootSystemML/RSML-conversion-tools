@@ -87,7 +87,7 @@ def measurement_table(g):
             
     return table
     
-def export_measurements(g, filename, sep='\t'):
+def export(g, filename, sep='\t'):
     """ save output of measurement_table in `filename` with csv format """
     table = measurement_table(g)
     table = [[' ' if e is None else str(e) for e in row] for row in table]

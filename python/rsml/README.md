@@ -16,7 +16,7 @@ The **rsml** python package provides:
 
  - import/export between .rsml files and MTG
  - plot
- - standard root system measurmements
+ - standard root system measurements
  - export to table file
 
 
@@ -41,5 +41,9 @@ The **rsml** package is an openalea package and thus requires openalea.deploy to
 
     # save mtg into rsml
     rsml.mtg2rsml(g, filename)
+    
+    # export mesurements to tabular file
+    from rsml import measurements
+    measurements.export(g, filename[:-5]+'.csv')
 ```    
 
