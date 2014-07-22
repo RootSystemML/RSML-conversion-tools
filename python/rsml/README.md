@@ -29,16 +29,16 @@ The **rsml** package is an openalea package and thus requires openalea.deploy to
 
 ### Use
 
-    from rsml import io
-    from rsml import plot  # requires matplotlib
+    import rsml
     
     # load rsml
-    g = io.rsml2mtg( filename )
+    g = rsml.rsml2mtg( filename )
     
-    # 2d plot
-    plot2d(g)
+    # plot
+    plot2d(g)  # requires matplotlib
+    plot3d(g)  # requires openalea.plantgl
     
     # save mtg into rsml
-    io.mtg2rsml(g, filename)
+    rsml.mtg2rsml(g, filename)
     
 

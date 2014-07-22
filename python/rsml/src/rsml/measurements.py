@@ -14,15 +14,14 @@ def _segment_length(geometry):
 
 def axes_length(g):
     """ return a dictionary of (axe-id, axe-length) """
-    axes = axe_vertices(g)
-    
     geometry = g.property('geometry')
-    length = {}
-    for axe in axes:
-        geom = geometry.get(axe)
+    length = g.properties().get('length',{}).copy()
         
-        if geom is None: length[axe] = 0
-        else:            length[axe] = _segment_length(geom).sum()
+    for axe in axe_vertices(g):
+        if axe not in length:
+            geom = geometry.get(axe)
+            if geom is None: length[axe] = 0
+            else:            length[axe] = _segment_length(geom).sum()
             
     return length
 

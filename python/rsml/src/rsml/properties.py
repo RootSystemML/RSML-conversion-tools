@@ -2,11 +2,14 @@
 Management of the mtg plant and root properties in accordance to rsml format
 """
 
-def set_rsml_properties(g):
+def set_rsml_properties(g, names=[]):
     """ set missing id, label and accession using default behavior """
     set_ids(g)
     set_label(g)
     set_accession(g)
+    
+    if 'length' in names:
+        set_axe_length(g)
 
 
 def set_ids(g):
@@ -36,3 +39,11 @@ def set_accession(g, axe_order=None, default=['PO:0020127','PO:0020121']):
     for axe in get_axes(g):
         accession.setdefault(axe,default[min(axe_order[vid],def_max)])
 
+def set_axe_length(g):
+    """ compute root axe length and add it to `g` """
+    from .measurements import axe_length
+    from .metadata import add_property_definition as add_prop_to_meta
+    
+    length = axe_length(g)
+    g.properties()['length'] = length
+    add_prop_to_meta(g, label='length', type='real')
