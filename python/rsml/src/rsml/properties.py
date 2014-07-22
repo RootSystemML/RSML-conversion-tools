@@ -2,14 +2,20 @@
 Management of the mtg plant and root properties in accordance to rsml format
 """
 
-def set_rsml_properties(g, names=[]):
-    """ set missing id, label and accession using default behavior """
+def set_rsml_properties(g, prop=[]):
+    """ 
+    Set missing id, label and accession and properties indicated by `prop`
+    
+    prop: either 'all'
+          or a list which can contain 'length' and 'parent-position' 
+    """
     set_ids(g)
     set_label(g)
     set_accession(g)
     
-    if 'length' in names:
-        set_axe_length(g)
+    if prop=='all': prop = ['length', 'parent-position']
+    if 'length' in prop:          set_root_length(g)
+    if 'parent-position' in prop: set_parent_position(g)
 
 
 def set_ids(g):
@@ -17,7 +23,7 @@ def set_ids(g):
     ids = g.property('id')
     for vid in g:
         ids.setdefault(vid,vid)
-    
+    return ids
 
 def set_label(g, default=['Scene','Plant','Root']):
     """ Set missing `label` of g vertices to the `default` one (w.r.t scale) """
@@ -25,25 +31,39 @@ def set_label(g, default=['Scene','Plant','Root']):
     def_max = len(default)
     for vid in g:
         label.setdefault(vid,default[min(g.scale(vid),def_max)])
+    return label
 
-def set_accession(g, axe_order=None, default=['PO:0020127','PO:0020121']):
+def set_accession(g, root_order=None, default=['PO:0020127','PO:0020121']):
     """ set missing accession property of root axes """
-    from .misc import axe_vertices as get_axes
-    from .misc import axe_order    as get_order
+    from .misc import root_vertices
+    from .misc import root_order    as get_order
     
-    if axe_order is None:
-        axe_order = get_order(g)
+    if root_order is None:
+        root_order = get_order(g)
     
     accession = g.property('accession')
-    def_max = len(default)
-    for axe in get_axes(g):
-        accession.setdefault(axe,default[min(axe_order[vid],def_max)])
+    def_max = len(default)-1
+    for axe in root_vertices(g):
+        accession.setdefault(axe,default[min(root_order[axe]-1,def_max)])
+    return accession
 
-def set_axe_length(g):
+def set_root_length(g):
     """ compute root axe length and add it to `g` """
-    from .measurements import axe_length
+    from .measurements import root_length
     from .metadata import add_property_definition as add_prop_to_meta
     
-    length = axe_length(g)
+    length = root_length(g)
     g.properties()['length'] = length
     add_prop_to_meta(g, label='length', type='real')
+    return length
+    
+def set_parent_position(g):
+    """ compute root axe length and add it to `g` """
+    from .measurements import parent_position
+    from .metadata import add_property_definition as add_prop_to_meta
+    
+    parent_pos = parent_position(g)
+    g.properties()['parent-position'] = parent_pos
+    add_prop_to_meta(g, label='parent-position', type='real')
+    return parent_pos
+

@@ -16,10 +16,10 @@ done: standardize label selection
 done: standardize root order selection
 done: standardize root accession (PO) selection - simplistic though
 
-todo: dfo-sort w.r.t. parent-position
-done: > compute parent-position from parent-node
+done: dfo-sort w.r.t. parent-position => root_tree
+done:   - compute parent-position from parent-node
 
-todo: save to csv file
+done: save to csv file
 
 Q: what about diameter?
 
