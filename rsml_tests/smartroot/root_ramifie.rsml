@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rsml xmlns:po='http://www.plantontology.org/xml-dtd/po.dtd'>
+	<metadata>
+		<version>1</version>
+		<unit>inch</unit>
+		<resolution>300.0</resolution>
+		<last-modified>today</last-modified>
+		<software>smartroot</software>
+		<user>globet</user>
+		<file-key>myimage</file-key>
+		<property-definitions>
+			<property-definition>
+		    	<label>diameter</label>
+		        <type>float</type>
+		        <unit>cm</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>length</label>
+		        <type>float</type>
+		        <unit>cm</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>angle</label>
+		        <type>float</type>
+		        <unit>degree</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>insertion</label>
+		        <type>float</type>
+		        <unit>cm</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>lauz</label>
+		        <type>float</type>
+		        <unit>cm</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>lbuz</label>
+		        <type>float</type>
+		        <unit>cm</unit>
+			</property-definition>
+			<property-definition>
+		    	<label>node-orientation</label>
+		        <type>float</type>
+		        <unit>radian</unit>
+			</property-definition>
+		</property-definitions>
+		<image>
+			<captured>today</captured>
+			<label>root_ramifie</label>
+		</image>
+	</metadata>
+	<scene>
+		<plant>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_0' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_1' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_3' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_0' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_1' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_3' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_1' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_4' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+					<root ID='ecfdce16-2aaa-4c17-acb1-c1b7b2bebdf0' label='ter_5' po:accession='PO:0009005'>
+						<properties>
+					<length>7.1171675</length>
+					<orientation>5.723307</orientation>
+					<insertion>1.2589774</insertion>
+					<angle>59.127663569236425</angle>
+				</properties>
+						<annotations>
+					</annotations>
+			 		</root>
+					<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='ter_6' po:accession='PO:0009005'>
+						<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+						<annotations>
+					</annotations>
+ 					</root>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_6' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>		
+		</plant>
+		
+		<plant>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_0' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_1' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_3' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_0' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_1' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_3' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>
+			<root ID='660792e2-01f7-4d09-8eaa-98d5b5c904d7' label='root_1' po:accession='PO:0009005'>
+				<properties>
+					<length>16.59414</length>
+					<orientation>4.6911044</orientation>
+					<lbuz>0.44085148</lbuz>
+					<lauz>11.805076</lauz>
+				</properties>
+				<annotations>
+				  <annotation name='Most Distal Lateral'>
+				    <lPos>1394.3003</lPos>
+				    <point x='0.0' y='0.0'/>
+				    <value>0</value>
+				    <software>smartroot</software>
+				  </annotation>
+				</annotations>
+				<root ID='15f4b829-59d1-4203-8908-c7394a31f4d9' label='lat_4' po:accession='PO:0009005'>
+					<properties>
+					<length>6.2314453</length>
+					<orientation>3.7092502</orientation>
+					<insertion>4.160673</insertion>
+					<angle>56.07465097251076</angle>
+				</properties>
+					<annotations>
+					</annotations>
+					<root ID='ecfdce16-2aaa-4c17-acb1-c1b7b2bebdf0' label='ter_5' po:accession='PO:0009005'>
+						<properties>
+					<length>7.1171675</length>
+					<orientation>5.723307</orientation>
+					<insertion>1.2589774</insertion>
+					<angle>59.127663569236425</angle>
+				</properties>
+						<annotations>
+					</annotations>
+			 		</root>
+					<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='ter_6' po:accession='PO:0009005'>
+						<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+						<annotations>
+					</annotations>
+ 					</root>
+ 				</root>
+				<root ID='003ef22d-9604-4589-a0df-404a38a8b850' label='lat_6' po:accession='PO:0009005'>
+					<properties>
+					<length>0.41356778</length>
+					<orientation>3.8604987</orientation>
+					<insertion>11.805076</insertion>
+					<angle>47.923434915125846</angle>
+				</properties>
+					<annotations>
+					</annotations>
+ 				</root>
+ 			</root>		
+		</plant>		
+	</scene>
+</rsml>
