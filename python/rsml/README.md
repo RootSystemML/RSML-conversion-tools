@@ -20,31 +20,25 @@ The **rsml** python package provides:
  - export to table file
 
 
-===== Installation =====
+### Installation
 
 The **rsml** package is an openalea package and thus requires openalea.deploy to be installed. To install it, go to the rsml folder and enter the following command::
 
     python setup.py install
     
 
-=== Download ===
+### Use
 
-Go to 
-
-=== Requirements ===
-
-* OpenAlea.Deploy
-
-=== Utilisation ===
-
-
-<code>
-python setup.py install
-</code>
-
-
-
-===== Documentation =====
-
-http://openalea.gforge.inria.fr/doc//rsml/doc/_build/html/contents.html
+    from rsml import io
+    from rsml import plot  # requires matplotlib
+    
+    # load rsml
+    g = io.rsml2mtg( filename )
+    
+    # 2d plot
+    plot2d(g)
+    
+    # save mtg into rsml
+    io.mtg2rsml(g, filename)
+    
 
