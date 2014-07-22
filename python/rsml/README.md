@@ -1,44 +1,39 @@
-====== RSML ======
+# RSML
 
-**Authors** : XXX
+**Authors** : C. Pradal and J. Diener
 
-**Institutes** : INRIA / CIRAD 
+**Institutes** : INRIA / CIRAD
 
 **Status** : Python package 
 
 **License** : Cecill-C
 
-**URL** : http://openalea.gforge.inria.fr
+**URL** : https://github.com/RootSystemML/RSML-conversion-tools
 
-===== About =====
+### About
 
-=== Description ===
+The **rsml** python package provides:
 
-RSML is a XXX
-
-
-
-=== Content ===
-
-The RSML package contains :
+ - import/export between .rsml files and MTG
+ - plot
+ - standard root system measurmements
+ - export to table file
 
 
 ===== Installation =====
 
+The **rsml** package is an openalea package and thus requires openalea.deploy to be installed. To install it, go to the rsml folder and enter the following command::
+
+    python setup.py install
+    
+
 === Download ===
 
-Go to http://gforge.inria.fr/frs/?group_id=79
+Go to 
 
 === Requirements ===
 
-* Scons >= 1
-* SconsX
 * OpenAlea.Deploy
-* Boost.Python
-
-
-=== Installation ===
-
 
 === Utilisation ===
 
