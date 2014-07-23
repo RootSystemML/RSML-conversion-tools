@@ -82,7 +82,7 @@ def measurement_table(g):
 
     table = [None]*len(tree)
     for i,root in enumerate(tree):
-        row = [ids[root], order[root], acc[root], parent[root], length[root]]
+        row = [ids[root], order[root], acc[root], parent[root], parpos[root], length[root]]
         table[i] = row
             
     return table
@@ -90,9 +90,10 @@ def measurement_table(g):
 def export(g, filename, sep='\t'):
     """ save output of measurement_table in `filename` with csv format """
     table = measurement_table(g)
-    table = [[' ' if e is None else str(e) for e in row] for row in table]
+    table = [map(str,row) for row in table]
+    #table = [[' ' if e is None else str(e) for e in row] for row in table]
     csv = [sep.join(row)+'\n' for row in table]
     
     with open(filename,'w') as f:
-        f.write('id order PO:accession parent length\n'.replace(' ','\t'))
+        f.write('id order PO:accession parent position length\n'.replace(' ','\t'))
         f.writelines(csv)
