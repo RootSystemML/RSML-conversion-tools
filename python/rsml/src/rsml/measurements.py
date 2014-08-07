@@ -1,6 +1,8 @@
 """
 Module that provide measuring tools on continuous RSML-type MTG
 """
+from openalea.mtg import MTG 
+
 from .misc import root_vertices
 from .misc import root_tree
 from .misc import root_order
@@ -63,37 +65,74 @@ def parent_position(g):
     
     return parent_pos
     
-def measurement_table(g):
-    """ Return a table (list-of-list) of g measurements
-    
-    Root are given in tree order (i.e. depth-first-order)
+class RSML_Measurements(list):
     """
-    from . import properties as prop
+    Class to store a list of root measurements
+        
+    Root are stored in tree order (i.e. depth-first-order)
+    Each row is a dictionary of measurements
     
-    parpos = parent_position(g)
-    tree   = root_tree(g, suborder=parpos)
-    order  = root_order(g, tree=tree)
-    length = root_length(g)
+    use the `add` method to add measurements from a root MTG
+    """
+    def __init__(self):
+        """ Contrust a RSML_Measurement """
+        pass
     
-    ids    = prop.set_ids(g)
-    acc    = prop.set_accession(g, root_order=order)
-    parent = [(root,g.parent(root)) for root in tree]
-    parent = dict((r, None if p is None else ids[p]) for r,p in parent)
-
-    table = [None]*len(tree)
-    for i,root in enumerate(tree):
-        row = [ids[root], order[root], acc[root], parent[root], parpos[root], length[root]]
-        table[i] = row
+    def add(self, g, name=None):
+        """ Add measurements of roots in `g` """ 
+        from . import properties as prop
+        
+        parpos = parent_position(g)
+        tree   = root_tree(g, suborder=parpos)
+        order  = root_order(g, tree=tree)
+        length = root_length(g)
+        
+        ids    = prop.set_ids(g)
+        acc    = prop.set_accession(g, root_order=order)
+        parent = [(root,g.parent(root)) for root in tree]
+        parent = dict((r, None if p is None else ids[p]) for r,p in parent)
+    
+        table = [None]*len(tree)
+        for i,root in enumerate(tree):
+            table[i] = dict(id=ids[root], order=order[root], accession=acc[root], 
+                            parent=parent[root], parent_position=parpos[root], 
+                            length=length[root], name=name)
+                
+        self.extend(table)
             
-    return table
+        return self
     
-def export(g, filename, sep='\t'):
-    """ save output of measurement_table in `filename` with csv format """
-    table = measurement_table(g)
-    table = [map(str,row) for row in table]
-    #table = [[' ' if e is None else str(e) for e in row] for row in table]
-    csv = [sep.join(row)+'\n' for row in table]
-    
-    with open(filename,'w') as f:
-        f.write('id order PO:accession parent position length\n'.replace(' ','\t'))
-        f.writelines(csv)
+    def export_csv(self, filename, sep='\t'):
+        """ export file `filename` with csv format 
+        
+        Use `sep` as csv file separator
+        """
+        keys = ['name','id','order','accession','parent','parent_position','length']
+        default = ' '*len(keys)
+        
+        # convert table entries to a list of string, then table rows to string
+        csv = [map(str,map(row.get,keys,default)) for row in self]
+        csv = [sep.join(row)+'\n' for row in csv]
+        
+        # export to given filename
+        with open(filename,'w') as f:
+            f.write(sep.join(keys)+'\n')
+            f.writelines(csv)
+            
+    def import_csv(self, filename, sep='\t'):
+        from csv import reader
+        from ast import literal_eval
+        
+        def try_eval(s):
+            try:
+                return literal_eval(s)
+            except:
+                return s
+                
+        with open(filename) as f:
+            content = reader(f,delimiter=sep)
+            keys = content.next()
+            for row in content:
+                self.append(dict(zip(keys,map(try_eval,row))))
+                
+        

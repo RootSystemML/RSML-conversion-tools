@@ -19,10 +19,25 @@ def simple_tree():
     return g
 
 def test_length():
-    from rsml.measurements import axes_length
+    from rsml.measurements import root_length
     
     g = simple_tree()
-    L = axes_length(g)
+    L = root_length(g)
     
     assert len(L.keys())==2, 'Number of axe incorrect'
     assert sorted(L.values())==[1,3], 'invalid axe length'
+    
+def test_RSML_Measurement():
+    from rsml.measurements import RSML_Measurements
+    
+    g = simple_tree()
+    m = RSML_Measurements()
+    m.add(g,name='simple')
+    
+    assert len(m)==2, 'incorrect number of axe in measurements list'
+    assert m[0].get('order')==1, 'incorrect order of 1st axis'
+    assert m[1].get('order')==2, 'incorrect order of 2nd axis'
+    assert m[0].get('length')==3, 'incorrect length of 1st axis'
+    assert m[1].get('length')==1, 'incorrect length of 2nd axis'
+
+
