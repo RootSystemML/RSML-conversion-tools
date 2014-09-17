@@ -59,3 +59,48 @@ def root_order(g, tree=None):
         
     return order
         
+def hausdorff_distance(polyline1,polyline2):
+    """
+    Compute the hausdorff distance from `polyline1` to `polyline2`
+    
+    :Inputs:
+      `polyline1`: 
+         a (k,n1) array for the n1 points of the 1st polyline in k-dimension
+      `polyline2`:
+         a (k,n2) array for the n2 points of the 2nd polyline in k-dimension
+       
+    :Output:
+       The hausdorff distance:
+           max( D(polyline1,polyline2), D(polyline2,polyline1) )
+         where
+           D(p1,p2) = max_(i in p1)  |p1[i] - closest-projection-on-p2|
+    """
+    import numpy as _np
+    
+    p1 = _np.asfarray(polyline1)
+    p2 = _np.asfarray(polyline2)
+    
+    norm = lambda x: (x**2).sum(axis=0)**.5
+    
+    def max_min_dist(points, polyline):
+        v1    = polyline[:,:-1]           # 1st segment vertex, shape (k,n2-1)
+        v2    = polyline[:, 1:]           # 2nd segment vertex, shape (k,n2-1)
+        sdir  = v2-v1                     # direction vector of segment
+        lsl   = norm(sdir)                # distance between v1 and v2
+        lsl   = _np.maximum(lsl,2**-5)    
+        sdir /= lsl                       # make sdir unit vectors
+        
+        # distance from v1 to the projection of points on segments
+        #    disallow projection out of segment: values are in [0,lsl]
+        on_edge = ((points[:,:,None]-v1[:,None,:])*sdir[:,None,:]).sum(axis=0) # (n1,n2-1)
+        on_edge = _np.minimum(_np.maximum(on_edge,0),lsl[None,:])
+        
+        # points projection on sdir
+        nproj = v1[:,None,:] + on_edge[None,:,:]*sdir[:,None,:]   # (k,n1,n2-1)
+        
+        # distance from points to "points projection on sdir"
+        return norm(nproj - points[:,:,None]).min(axis=1).max()
+
+    return max(max_min_dist(p1,p2), max_min_dist(p2,p1))
+
+
