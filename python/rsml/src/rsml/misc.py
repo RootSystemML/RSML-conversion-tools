@@ -38,8 +38,7 @@ def root_order(g, tree=None):
     
     The order is select as:
       - the value of the 'order' property, if present
-      - 1 for axe with no parent
-      - the parent order +1 otherwise
+      - otherwise, 1 for axe with no parent or the parent order +1
       
     tree is the optional list of root id in `g`. If not given, it is computed
     """

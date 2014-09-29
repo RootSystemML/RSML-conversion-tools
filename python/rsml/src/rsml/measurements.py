@@ -15,16 +15,17 @@ def _segment_length(geometry):
     return (vec.sum(axis=1)**.5)
 
 
-def root_length(g):
-    """ return a dictionary of (axe-id, axe-length) """
+def root_length(g, roots=None):
+    """ return a dictionary of (root, root-length) """
     geometry = g.property('geometry')
     length = g.properties().get('length',{}).copy()
         
-    for axe in root_vertices(g):
-        if axe not in length:
-            geom = geometry.get(axe)
-            if geom is None: length[axe] = 0
-            else:            length[axe] = _segment_length(geom).sum()
+    if roots is None: roots=root_vertices(g)
+    for root in roots:
+        if root not in length:
+            geom = geometry.get(root)
+            if geom is None: length[root] = 0
+            else:            length[root] = _segment_length(geom).sum()
             
     return length
 
