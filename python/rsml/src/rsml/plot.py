@@ -1,5 +1,5 @@
 """ Visualisation of an MTG computed from RSML
- 
+
 Visualisation:
 1. PlantGL and Matplotlib
 2. Time-series
@@ -11,7 +11,7 @@ Visualisation:
 def plot3d(g, color=None, img_dir='.'):
     import openalea.plantgl.all as pgl
     from copy import copy
-    
+
     default_color = (177, 123, 6)
     colors = {}
     colors[0] = pgl.Color3.RED
@@ -22,17 +22,16 @@ def plot3d(g, color=None, img_dir='.'):
     colors[5] = pgl.Color3.WHITE
     colors[6] = pgl.Color3.BLACK
 
-
     if color is None:
         def my_color(vid):
             order = g.order(vid)
-            return colors.get(order,default_color)
+            return colors.get(order, default_color)
         color = my_color
     elif not callable(color):
         _color = copy(color)
-        color=lambda x: _color
+        color = lambda x: _color
 
-    section = pgl.Polyline2D([(0.5,0), (0,0.5), (-0.5,0),(0,-0.5),(0.5,0)])
+    section = pgl.Polyline2D([(0.5, 0), (0, 0.5), (-0.5, 0), (0, -0.5), (0.5, 0)])
     geoms = g.property('geometry')
     diams = g.property('diameter')
 
@@ -41,20 +40,25 @@ def plot3d(g, color=None, img_dir='.'):
         if diams and (vid in diams):
             diameters = diams[vid]
             if isinstance(diameters, (list, tuple)):
-                _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                                section, 
-                                pgl.Point2Array(zip(diams[vid],diams[vid])))
+                _geom = pgl.Extrusion(
+                    pgl.Polyline(map(pgl.Vector3, geoms[vid])), 
+                    section, 
+                    pgl.Point2Array(zip(diams[vid], diams[vid]))
+                )
             else:
-                _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                                section, 
-                                pgl.Point2Array([(diameters,diameters) for i in range(len(geoms))]))
+                _geom = pgl.Extrusion(
+                    pgl.Polyline(map(pgl.Vector3, geoms[vid])), 
+                    section,
+                    pgl.Point2Array([(diameters, diameters) for i in range(len(geoms))])
+                )
 
         else:
-            _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                             section)
+            _geom = pgl.Extrusion(
+                pgl.Polyline(map(pgl.Vector3, geoms[vid])), 
+                section)
 
         return pgl.Shape(_geom, _color)
-    scene = pgl.Scene([sweep(i) for i  in geoms])
+    scene = pgl.Scene([sweep(i) for i in geoms])
     pgl.Viewer.display(scene)
     return scene
 
@@ -76,11 +80,8 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
     import numpy as np  
     from collections import Iterable
     from matplotlib import pyplot as plt
-    from matplotlib.lines import Line2D
-    from openalea.core.path import path
     
     if img_file is not None:
-        img = path(img_file)
         if isinstance(img_file,basestring):
             image = plt.imread(img_file)
         else:
@@ -116,7 +117,6 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         plot_fct = plt.plot
     
     for v in vertices:
-        n = g.node(v)
         _order = g.order(v)
         if check_order and _order != order:
             continue         
@@ -126,6 +126,9 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         plot_fct(poly[:,0], poly[:,1], color=_color, marker='.')
 
     if img_file is None:
-        ax = plt.gca()
-        ax.set_ylim(sorted(ax.get_ylim(),reverse=True))
+        if axis:
+            ax = axis
+        else:
+            ax = plt.gca()
+            ax.set_ylim(sorted(ax.get_ylim(),reverse=True))
         ax.axis('equal')
