@@ -65,7 +65,7 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         - g : MTG with properties like 2D coordinates and grains.
 
     :Optional Parameters:
-        - img_file : filename used to display the image
+        - img_file : an array, or the filename, of an image to display in background
         - axis : matplotlib axis to display several plot in the same figure
         - root_id : if None, root_id is the first root of the MTG at scale=max_scale .
           Draw all the descendants of root_id. 
@@ -73,23 +73,24 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         - order : draw only vertices of order 'order'
         - color: function or dict to define the color of each vertex. Format is matplotlib colors (e.g. 'b', 'g', 'y', 'r')
     """  
-    #clf()
     import numpy as np  
     from collections import Iterable
-    from matplotlib.pyplot import imread, imshow
+    from matplotlib import pyplot as plt
     from matplotlib.lines import Line2D
-    from pylab import plot as pplot
-    from pylab import clf, gca
     from openalea.core.path import path
-    import numpy as np
-    if img_file:
+    
+    if img_file is not None:
         img = path(img_file)
+        if isinstance(img_file,basestring):
+            image = plt.imread(img_file)
+        else:
+            image = img_file
         if axis:
-            ax_img = axis.imshow(imread(img)) 
+            ax_img = axis.imshow(image) 
             axis.autoscale(enable=False)
         else:
-            ax_img = imshow(imread(img)) 
-            gca().autoscale(enable=False)
+            ax_img = plt.imshow(image) 
+            plt.gca().autoscale(enable=False)
     
 
     colors = 'rgbycmyk'##{0:'r', 1:'g', 2:'b', 3:'y', 4:'c', 5: 'm', 6:'y', 7:'k'}
@@ -112,7 +113,7 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
     if axis: 
         plot_fct = axis.plot
     else:    
-        plot_fct = pplot
+        plot_fct = plt.plot
     
     for v in vertices:
         n = g.node(v)
@@ -124,3 +125,7 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         poly = np.array(polylines[v])          
         plot_fct(poly[:,0], poly[:,1], color=_color, marker='.')
 
+    if img_file is None:
+        ax = plt.gca()
+        ax.set_ylim(ax.get_ylim()[::-1])
+        ax.axis('equal')
