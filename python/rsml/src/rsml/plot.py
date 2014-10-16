@@ -127,5 +127,5 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
 
     if img_file is None:
         ax = plt.gca()
-        ax.set_ylim(ax.get_ylim()[::-1])
+        ax.set_ylim(sorted(ax.get_ylim(),reverse=True))
         ax.axis('equal')

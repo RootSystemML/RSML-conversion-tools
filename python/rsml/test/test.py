@@ -1,3 +1,5 @@
+from openalea.deploy import shared_data
+
 N = 2
 
 from time import sleep
