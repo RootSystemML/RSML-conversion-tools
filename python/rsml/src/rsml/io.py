@@ -10,7 +10,7 @@ MTG writer:
   * Generate same file.
   * Manage an MTG with 2 scales: Plant, RootAxis
   * Manage an MTG with 3 scales: Plant, RootAxis, Segment
- 
+
 Visualisation:
 1. PlantGL and Matplotlib
 2. Time-series
@@ -21,19 +21,13 @@ Visualisation:
 # XML SmartRoot / RootNav reader and writer
 ##############################################################################
 
-from StringIO import StringIO
-from math import radians
-from os import path
-
 from ast import literal_eval
 
 import xml.etree.ElementTree as xml
 from xml.dom import minidom
-from tempfile import mkstemp
 
 #from openalea.core.graph.property_graph import PropertyGraph
-from openalea.mtg import MTG, fat_mtg, turtle as mtg_turtle
-from openalea.mtg import traversal
+from openalea.mtg import MTG, fat_mtg
 
 from . import metadata
 
@@ -77,7 +71,7 @@ class Parser(object):
     def add_field(elt, my_dict) :
         """ Update the properties in the MTG """
         tag = elt.tag#.replace('-','_') 
-        my_dict[elt.tag]=elt.text
+        my_dict[tag]=elt.text
 
     def rsml(self, elts, **properties):
         """ A RSA with attributes, parameters and a recursive structure.
@@ -113,7 +107,6 @@ class Parser(object):
         """ A plant with parameters and a recursive structure.
 
         """
-        g = self._g
         self._propdef = {}
         for elt in elts:
             self.dispatch(elt)
@@ -168,7 +161,6 @@ class Parser(object):
 
     def root(self, elts, **attrib):
         """ A root axis with geometry, functions, properties """
-        g = self._g
         parent = self._node
 
         if parent.scale() == 1:
@@ -242,7 +234,6 @@ class Parser(object):
 
         name = properties['name']
         domain = properties['domain']
-        origin = properties.get('origin', 'base')
 
         samples = [self.sample(elt, domain=domain) for elt in elts]
         node.__setattr__(name,samples)
@@ -270,8 +261,6 @@ class Parser(object):
     def annotation(self, elts, **properties):
         """ Annotations attached to a part of the MTG.
         """
-        annos = self._node.annotations
-
         name = properties.get('name', 'default')
         anno = Annotation(name=name) 
         for elt in elts:
@@ -286,7 +275,7 @@ class Parser(object):
                 anno.points.append(point)
             else:
                 # Error
-                print 'Invalid Annotation format'
+                print 'Invalid Annotation format', elt.tag
 
 
 class Annotation(object):
@@ -414,8 +403,8 @@ class Dumper(object):
         gprop = dict((k,v) for (k,v) in g.graph_properties().iteritems() if k!='metadata')
         if len(gprop):
             gprop = metadata.filter_literal(gprop)
-            sc_prop  = self.SubElement(self.xml_scene, 'properties')
-            sc_gprop = self.SubTree(sc_prop, 'graph_property', gprop)
+            #sc_prop  = self.SubElement(self.xml_scene, 'properties')
+            #sc_gprop = self.SubTree(sc_prop, 'graph_property', gprop)
         
         # Traverse the MTG
         self.plants = []
@@ -436,10 +425,10 @@ class Dumper(object):
         g = self._g
 
 
-        self.prev_node = tree_node = g.node(vid)
+        self.prev_node = g.node(vid)
         props = g[vid]
 
-        self.xml_nodes[vid] = plant = tree = self.SubElement(self.xml_scene, 'plant')        
+        self.xml_nodes[vid] = plant = self.SubElement(self.xml_scene, 'plant')        
 
         # Extract SegmentType & LeafType
         plant.attrib['id'] = str(props.pop('id', vid))
@@ -489,6 +478,7 @@ class Dumper(object):
             for pt in polyline: 
                 pt_elt = self.SubElement(tb, 'point', 
                                          attrib=dict(zip(xyz,map(str,pt))))
+                
         else:
             from warnings import warn 
             xml2mtg_id = dict((xml_id,mtg_id) for mtg_id,xml_id in self.xml_nodes.iteritems())
@@ -515,6 +505,7 @@ class Dumper(object):
         `props` ....
         """
         # TODO: Hack, hack, hack...
+        g = self._g
         graph_prop = g.graph_properties()
         pname = []
         if 'metadata' in graph_prop:
@@ -565,49 +556,3 @@ def mtg2rsml(g, rsml_file):
             f.write(s)
     else:
         rsml_file.write(s)
-            
-        
-"""
-def plot(g, color=None, img_dir='.'):
-    import openalea.plantgl.all as pgl
-    from copy import copy
-    
-    default_color = (177, 123, 6)
-    colors = {}
-    colors[0] = pgl.Color3.RED
-    colors[1] = pgl.Color3.GREEN
-    colors[2] = pgl.Color3.BLUE
-    colors[3] = pgl.Color3.YELLOW
-    colors[4] = pgl.Color3.CYAN
-    colors[5] = pgl.Color3.WHITE
-    colors[6] = pgl.Color3.BLACK
-
-
-    if color is None:
-        def my_color(vid):
-            order = g.order(vid)
-            return colors.get(order,default_color)
-        color = my_color
-    elif not callable(color):
-        _color = copy(color)
-        color=lambda x: _color
-
-    section = pgl.Polyline2D([(0.5,0), (0,0.5), (-0.5,0),(0,-0.5),(0.5,0)])
-    geoms = g.property('geometry')
-    diams = g.property('diameter')
-
-    def sweep(vid):
-        _color = pgl.Material(color(vid))
-        if diams:
-            _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                             section, 
-                             pgl.Point2Array(zip(diams[vid],diams[vid])))
-        else:
-            _geom = pgl.Extrusion(pgl.Polyline(map(pgl.Vector3,geoms[vid])), 
-                             section)
-
-        return pgl.Shape(_geom, _color)
-    scene = pgl.Scene([sweep(i) for i  in geoms])
-    pgl.Viewer.display(scene)
-"""
-
