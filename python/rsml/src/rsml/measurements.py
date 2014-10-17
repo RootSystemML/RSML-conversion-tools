@@ -29,7 +29,7 @@ def root_length(g, roots=None):
             
     return length
 
-def parent_position(g, roots=None):
+def parent_position(g, distance2tip=False, roots=None):
     """ (Try to) compute the parent postion of root sub-axes 
     
     The parent position is computed as follow:
@@ -38,7 +38,10 @@ def parent_position(g, roots=None):
       - Otherwise, return None
       
     The values are returned as a dictionary of (root-id, root-parent-position) for all `root-id` in
-    `roots`, if given, or all root axes in `g` otherwise  
+    `roots`, if given, or all root axes in `g` otherwise
+    
+    if `distance2tip`==True, the return calues are the distance from the branching position to the
+    tip of the parent axes. 
     """
     parent_pos0 = g.properties().get('parent-position', {})
     parent_node = g.properties().get('parent-node', {})
@@ -46,7 +49,13 @@ def parent_position(g, roots=None):
     # root arclength computed for parent of subaxes with parent_node prop
     cumlen = {}
     geometry = g.properties().get('geometry')
-    def get_pos_from_node(root):
+    
+    def cumlength(root):
+        if root not in cumlen:
+            cumlen[root] = _segment_length(geometry[root]).cumsum()
+        return cumlen[root]
+        
+    def get_branching_distance(root):
         if root not in parent_node:
             return None
             
@@ -55,10 +64,11 @@ def parent_position(g, roots=None):
             return 0
             
         parent = g.parent(root)
-        if not parent in cumlen:
-            cumlen[parent] = _segment_length(geometry[parent]).cumsum()
-            
-        return cumlen[parent][pnode-1]
+        clen = cumlength(parent)
+        if distance2tip:
+            return clen[-1] - clen[pnode-1]
+        else:
+            return clen[pnode-1]
     
     # parse all root axes
     parent_pos = {}
@@ -67,7 +77,7 @@ def parent_position(g, roots=None):
         if root in parent_pos0:
             parent_pos[root] = parent_pos0[root]
         else:
-            parent_pos[root] = get_pos_from_node(root)
+            parent_pos[root] = get_branching_distance(root)
     
     return parent_pos
     
