@@ -49,4 +49,4 @@ The **rsml** package is an openalea package and thus requires openalea.deploy to
 
 ### Tutorial
 
-http://nbviewer.ipython.org/github/RootSystemML/RSML-conversion-tools/blob/master/python/rsml/example/RSML%20tutorial%20in%20Python.ipynb
+[IPython tutorial] (http://nbviewer.ipython.org/github/RootSystemML/RSML-conversion-tools/blob/master/python/rsml/example/RSML%20tutorial%20in%20Python.ipynb)
