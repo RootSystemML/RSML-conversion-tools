@@ -29,40 +29,45 @@ def root_length(g, roots=None):
             
     return length
 
-def parent_position(g):
-    """ Try to compute the parent postion of root sub-axes 
+def parent_position(g, roots=None):
+    """ (Try to) compute the parent postion of root sub-axes 
     
     The parent position is computed as follow:
-      - Use the root axe 'parent_position' property, if present,
-      - Otherwise, compute it using 'parent_node', if present,
+      - Use the root axe 'parent-position' property, if present,
+      - Otherwise, compute it using 'parent-node', if present,
       - Otherwise, return None
       
-    The values are returned as a dictionary of (axe-id, axe-parent-position)
+    The values are returned as a dictionary of (root-id, root-parent-position) for all `root-id` in
+    `roots`, if given, or all root axes in `g` otherwise  
     """
-    parent_pos  = g.properties().get('parent-position', {}).copy()
+    parent_pos0 = g.properties().get('parent-position', {})
     parent_node = g.properties().get('parent-node', {})
         
-    # axe arclength computed for parent of subaxes with parent_node prop
+    # root arclength computed for parent of subaxes with parent_node prop
     cumlen = {}
     geometry = g.properties().get('geometry')
-    def get_pos_from_node(axe):
-        if axe not in parent_node:
+    def get_pos_from_node(root):
+        if root not in parent_node:
             return None
             
-        pnode = parent_node[axe]
+        pnode = parent_node[root]
         if pnode==0:
             return 0
             
-        parent = g.parent(axe)
+        parent = g.parent(root)
         if not parent in cumlen:
             cumlen[parent] = _segment_length(geometry[parent]).cumsum()
             
         return cumlen[parent][pnode-1]
     
     # parse all root axes
-    for axe in root_vertices(g):
-        if axe not in parent_pos:
-            parent_pos[axe] = get_pos_from_node(axe)
+    parent_pos = {}
+    if roots is None: roots = root_vertices(g)
+    for root in roots:
+        if root in parent_pos0:
+            parent_pos[root] = parent_pos0[root]
+        else:
+            parent_pos[root] = get_pos_from_node(root)
     
     return parent_pos
     
