@@ -14,12 +14,27 @@ rsml_dir = shared_data(rsml.__path__)#,'AR570/2012_11_25_09h00_chl110_1_1.rsml')
 rsml_files = sorted(glob(rsml_dir/"AR570/*.rsml"))
 
 def plot(x,y, label):
+    l = plt.plot(x,y, '+')[0]
+    
     # fit and plot linear regression
-    a,b = np.polyfit(x,y,1)
-    X = np.array([0,x.max()])
-    l = plt.plot(x,y, '.')[0]
-    plt.plot(X,a*X+b,l.get_color(), label=label+"(a=%.2f)"%a)
-    ax.legend(loc=0)
+    #   add constraint on (0,0)    
+    x = np.hstack(([0],x))
+    y = np.hstack(([0],y))
+    w = np.ones_like(x)
+    w[0]=2*x.size
+    
+    #  fitting
+    c = np.polyfit(x,y,2, w=w)
+    
+    # plot
+    X = np.linspace(0,x.max(),5)
+    def poly(x,c):
+        return sum([ci*(X**i) for i,ci in enumerate(c)])
+        
+    plt.plot(X,poly(X,c[::-1]),l.get_color(), label=label, lw=2)
+
+    ax.set_xlabel("Distance from ramification to primary tip")
+    ax.set_ylabel("Lateral root length")
     
 def plot_from_file(rsml_file, ax, split_plant, label=""):
     g = rsml.rsml2mtg(rsml_file)
@@ -28,7 +43,7 @@ def plot_from_file(rsml_file, ax, split_plant, label=""):
     root = measurements.root_order(g)               # ids of lateral roots
     root = [r for r,o in root.iteritems() if o==2]
     length = measurements.root_length(g,root)       # length of roots
-    ppos = measurements.parent_position(g,root)     # branching position on parent
+    ppos = measurements.parent_position(g,roots=root,distance2tip=True)  # branching position on parent                
     plant = dict((r,g.complex(r)) for r in root)    # plant id of all roots
     
     if split_plant:
@@ -47,16 +62,16 @@ def plot_from_file(rsml_file, ax, split_plant, label=""):
 
 plt.ion()
 plt.clf()
-
+                                       
 
 # plot last time step, for each plant
-ax = plt.subplot(2,1,1)
-filename = os.path.split(rsml_files[-1])[-1]
-plot_from_file(rsml_files[-1], ax, split_plant=True)
-ax.set_title("Individual plants at day 12")    
+#ax = plt.subplot(1,1,1) 
+#filename = os.path.split(rsml_files[-1])[-1]
+#plot_from_file(rsml_files[-1], ax, split_plant=True)
+#ax.set_title("Individual plants at day 12")    
     
 # plot for each time step, no plant distinction 
-ax = plt.subplot(2,1,2, sharex=ax, sharey=ax)
+ax = plt.subplot(1,1,1)#, sharex=ax, sharey=ax)
 days = [6,7,8,10,11,12]
 for i,rsml_file in enumerate(rsml_files):
     plot_from_file(rsml_file, ax, split_plant=False, label="day %2d"%days[i])
