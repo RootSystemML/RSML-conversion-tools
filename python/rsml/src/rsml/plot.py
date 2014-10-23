@@ -62,6 +62,7 @@ def plot3d(g, color=None, img_dir='.'):
     pgl.Viewer.display(scene)
     return scene
 
+
 def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, clear=True, **args):
     """ Plot MTG with grains on the initial image.
 
@@ -75,14 +76,15 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
           Draw all the descendants of root_id. 
           root_id can also be a list of vertices.
         - order : draw only vertices of order 'order'
-        - color: function or dict to define the color of each vertex. Format is matplotlib colors (e.g. 'b', 'g', 'y', 'r')
+        - color: function or dict to define the color of each vertex. 
+          Format is matplotlib colors (e.g. 'b', 'g', 'y', 'r')
     """  
     import numpy as np  
     from collections import Iterable
     from matplotlib import pyplot as plt
-    
+
     if img_file is not None:
-        if isinstance(img_file,basestring):
+        if isinstance(img_file, basestring):
             image = plt.imread(img_file)
         else:
             image = img_file
@@ -92,9 +94,9 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
         else:
             ax_img = plt.imshow(image) 
             plt.gca().autoscale(enable=False)
-    
 
-    colors = 'rgbycmyk'##{0:'r', 1:'g', 2:'b', 3:'y', 4:'c', 5: 'm', 6:'y', 7:'k'}
+    ##{0:'r', 1:'g', 2:'b', 3:'y', 4:'c', 5: 'm', 6:'y', 7:'k'}
+    colors = 'rgbycmyk'
 
     root_scale = g.max_scale()
     polylines = g.property('geometry')
@@ -102,33 +104,61 @@ def plot2d(g, img_file=None, axis=None, root_id=None, color=None, order=None, cl
     if root_id is None:
         vertices = polylines.keys()
     elif isinstance(root_id, Iterable):
-        vertices = [ v for r in root_id 
-                    for vr in g.component_roots_at_scale(r,scale=root_scale) 
+        vertices = [v for r in root_id
+                    for vr in g.component_roots_at_scale(r, scale=root_scale) 
                     for v in g.Descendants(vr)]
     else:
         vid = g.component_roots_at_scale(root_id, scale=root_scale)
         vertices = g.Descendants(vid)
 
     check_order = order is not None
-    
+
     if axis: 
         plot_fct = axis.plot
     else:    
         plot_fct = plt.plot
-    
+
     for v in vertices:
         _order = g.order(v)
         if check_order and _order != order:
             continue         
-            
-        _color = color(v) if color else colors[_order%len(colors)]##.get(_order,'r')
+
+        _color = color(v) if color else colors[_order % len(colors)]  # .get(_order,'r')
         poly = np.array(polylines[v])          
-        plot_fct(poly[:,0], poly[:,1], color=_color, marker='.')
+        plot_fct(poly[:, 0], poly[:, 1], color=_color, marker='.')
 
     if img_file is None:
         if axis:
             ax = axis
         else:
             ax = plt.gca()
-            ax.set_ylim(sorted(ax.get_ylim(),reverse=True))
+            ax.set_ylim(sorted(ax.get_ylim(), reverse=True))
         ax.axis('equal')
+
+
+def multiple_plot(files, image=True):
+    from openalea.core.path import path
+    from matplotlib import pyplot as plt
+    import rsml
+
+    def get_file(f):    
+        exts = ['.png', '.jpg', '.tif']
+        fn = f.splitext()[0]
+        for ext in exts:
+            _f = path(fn + ext)
+            if _f.exists():
+                return _f 
+
+    n = len(files)
+    f, axes = plt.subplots(1, n, sharex=True, sharey=True)
+    f.set_size_inches(7 * n, 5)
+    for i in range(n):
+        fn = files[i]
+        g = rsml.rsml2mtg(fn)
+        if image:
+            plot2d(g, img_file=get_file(fn), axis=axes[i], ms=1)
+        else:
+            plot2d(g, axis=axes[i], ms=1)
+    if not image:
+        ax = axes[0]
+        ax.set_ylim(ax.get_ylim()[::-1])
