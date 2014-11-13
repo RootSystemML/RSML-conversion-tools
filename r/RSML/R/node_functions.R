@@ -26,11 +26,13 @@ node =
 
 
 #' Print the node
-#' @param obj of class node
+#' @param x object of class node
+#' @param ... print options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 print.node = 
-  function(obj)
+  function(x, ...)
   {
+    obj <- x
     print(paste("x =",format(obj$x)), quote=F)
     print(paste("y = ",format(obj$y)), quote=F)
     print(paste("diameter = ",format(obj$diameter)), quote=F)

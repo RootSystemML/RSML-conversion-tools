@@ -1,6 +1,7 @@
 
 #' Import a single RSML file into a Plant object
 #' @param rsml.path    The path to the .rsml file. Mandatory.
+#' @param threed  Does the RSML file contains a 3D root system?
 #' @keywords rsml
 #' @keywords threed is the plant in 3d
 #' @import XML 
@@ -103,7 +104,7 @@ rsmlToPlant <- function(rsml.path, threed = FALSE){
                     rr$nodes[[i]]$diameter = as.numeric(f[[i]]) / scale
                   }
                 }
-                # Get the orientation and the orientation ange
+                # Get the orientation and the insertion angel
                 if(grepl("orien", f$.attr[1])){
                   for(i in 1:(length(f)-1)){
                     rr$nodes[[i]]$orientation = f[[i]]

@@ -1,11 +1,13 @@
-Package: RSML
+Package: rsml
 Type: Package
-Title: RSML file processing
-Version: 1.0
+Title: Root System Markup Language (RSML) File Processing
+Version: 1.2
 Date: 2014-07-22
 Author: Guillaume Lobet
 Maintainer: Guillaume Lobet <guillaume.lobet@ulg.ac.be>
-Description: Package to read and analyse rsml files
+Description: Read and analyse Root System Markup Language (RSML) files, used to
+    store plant root system architecture data. More information can be found
+    here: http://rootsystemml.github.io/
 License: GPL-2
 Imports:
-    XML
+    XML,rgl

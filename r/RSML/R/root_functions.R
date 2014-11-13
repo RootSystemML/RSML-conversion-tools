@@ -1,17 +1,17 @@
 # New generic functions
-nNode = function(obj) UseMethod("nNode")
-nChild = function(obj) UseMethod("nChild")
-totalLength = function(obj) UseMethod("totalLength")
-coords = function(obj) UseMethod("coords")
-yrange = function(obj) UseMethod("yrange")
-xrange = function(obj) UseMethod("xrange")
-zrange = function(obj) UseMethod("zrange")
-insertionPosition = function(obj) UseMethod("insertionPosition")
-meanInsertionAngle = function(obj) UseMethod("meanInsertionAngle")
-meanInterbranch = function(obj, allroot) UseMethod("meanInterbranch")
-nLatRoot = function(obj) UseMethod("nLatRoot")
-nPrimRoot = function(obj) UseMethod("nPrimRoot")
-
+# nNode = function(obj) UseMethod("nNode")
+# nChild = function(obj) UseMethod("nChild")
+# totalLength = function(obj) UseMethod("totalLength")
+# coords = function(obj) UseMethod("coords")
+# yrange = function(obj) UseMethod("yrange")
+# xrange = function(obj) UseMethod("xrange")
+# zrange = function(obj) UseMethod("zrange")
+# insertionPosition = function(obj) UseMethod("insertionPosition")
+# meanInsertionAngle = function(obj) UseMethod("meanInsertionAngle")
+# meanInterbranch = function(obj, allroot) UseMethod("meanInterbranch")
+# nLatRoot = function(obj) UseMethod("nLatRoot")
+# nPrimRoot = function(obj) UseMethod("nPrimRoot")
+# 
 
 
 ######################################################################
@@ -131,7 +131,7 @@ addNodeToRoot =
 #' @return the number of nodes in the root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-nNode.root = function(obj) length(obj$nodes)
+nNode = function(obj) length(obj$nodes)
 
 ######################################################################
 
@@ -139,7 +139,7 @@ nNode.root = function(obj) length(obj$nodes)
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(x1,x2) where x1 and x2 are the x limits of the root
-xrange.root = 
+xrange = 
   function(obj)
   {
     xmin = 1e9;
@@ -158,7 +158,7 @@ xrange.root =
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the root
-yrange.root = 
+yrange = 
   function(obj)
   {
     ymin = 1e9;
@@ -178,7 +178,7 @@ yrange.root =
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the root
-zrange.root = 
+zrange = 
   function(obj)
   {
     zmin = 1e9;
@@ -196,13 +196,14 @@ zrange.root =
 ######################################################################
 
 #' Compute the length of the root based on the coordinatres of its nodes
-#' @param obj of class root
+#' @param x object of class root
 #' @return the length of the root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
 length.root = 
-  function(obj)
+  function(x)
   {
+    obj <- x
     obj$nodes[length(obj$nodes)][[1]]$bLength
   }
 
@@ -230,7 +231,7 @@ addChildToRoot =
 #' @return the number of child root in the current root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-nChild.root = function(obj) length(obj$children)
+nChild = function(obj) length(obj$children)
 
 ######################################################################
 
@@ -239,24 +240,27 @@ nChild.root = function(obj) length(obj$children)
 #' @return the mean lateral angle
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-meanInsertionAngle.root = 
+meanInsertionAngle = 
   function(obj)
   {
     ang <- 0
     for(i in 1:nChild(obj)){
       ang <- ang + obj$children[[i]]$insertion_angle
     }
-    ang / nChild(obj)
+    mean <- ang / nChild(obj)
+    if(length(mean) == 0) mean=0
+    mean
   }
 
 ######################################################################
 
 #' Compute the mean interbranch distance of the children (lateral) roots
 #' @param obj of class root
+#' @param allroot if true, compute the interbanch distance on the whole root
 #' @return the mean interbranch distance
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-meanInterbranch.root = 
+meanInterbranch = 
   function(obj, allroot=F)
   {
     min <- 10000
@@ -279,7 +283,7 @@ meanInterbranch.root =
 #' @return the total lenght of the root and children
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-totalLength.root = 
+totalLength = 
   function(obj)
   {
     l = length(obj)
@@ -296,7 +300,7 @@ totalLength.root =
 #' @return a dataframe containing the node coordinates (x, y, z)
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
-coords.root = 
+coords = 
   function(obj)
   {
     coords <- data.frame(x=numeric(nNode(obj)), y=numeric(nNode(obj)), z=numeric(nNode(obj)))

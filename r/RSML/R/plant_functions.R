@@ -1,17 +1,17 @@
 # New generic functions
-nNode = function(obj) UseMethod("nNode")
-nChild = function(obj) UseMethod("nChild")
-totalLength = function(obj) UseMethod("totalLength")
-coords = function(obj) UseMethod("coords")
-yrange = function(obj) UseMethod("yrange")
-xrange = function(obj) UseMethod("xrange")
-yrange = function(obj) UseMethod("zrange")
-insertionPosition = function(obj) UseMethod("insertionPosition")
-meanInsertionAngle = function(obj) UseMethod("meanInsertionAngle")
-meanInterbranch = function(obj) UseMethod("meanInterbranch")
-nLatRoot = function(obj) UseMethod("nLatRoot")
-nPrimRoot = function(obj) UseMethod("nPrimRoot")
-nRoot = function(obj) UseMethod("nRoot")  
+# nNode = function(obj) UseMethod("nNode")
+# nChild = function(obj) UseMethod("nChild")
+# totalLength = function(obj) UseMethod("totalLength")
+# coords = function(obj) UseMethod("coords")
+# yrange = function(obj) UseMethod("yrange")
+# xrange = function(obj) UseMethod("xrange")
+# yrange = function(obj) UseMethod("zrange")
+# insertionPosition = function(obj) UseMethod("insertionPosition")
+# meanInsertionAngle = function(obj) UseMethod("meanInsertionAngle")
+#meanInterbranch = function(obj, allroot=T) UseMethod("meanInterbranch")
+# nLatRoot = function(obj) UseMethod("nLatRoot")
+# nPrimRoot = function(obj) UseMethod("nPrimRoot")
+# nRoot = function(obj) UseMethod("nRoot")  
 
 ############################################################
 
@@ -50,9 +50,10 @@ addRootToPlant =
 #' Compute the mean interbranch distance of all the primary roots in the image
 #' @keywords rsml
 #' @param obj of class plant
+#' @param allroot if true, compute the interbanch distance on the whole root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the mean interbranch distance of the root system
-meanInterbranch.plant = 
+meanInterbranchPlant = 
   function(obj, allroot=F) 
   {
     dens <- 0
@@ -69,7 +70,7 @@ meanInterbranch.plant =
 #' @param obj of class plant
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the mean insertion angle of the root system
-meanInsertionAngle.plant = 
+meanInsertionAnglePlant = 
   function(obj) 
   {
     ang <- 0
@@ -86,7 +87,7 @@ meanInsertionAngle.plant =
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the number of root in the plant
-nRoot.plant = 
+nRoot = 
   function(obj) 
   {
     l <- length(obj$roots)
@@ -103,7 +104,7 @@ nRoot.plant =
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the number of primary root in the plant
-nPrimRoot.plant = 
+nPrimRoot = 
   function(obj) 
   {
     length(obj$roots)
@@ -115,7 +116,7 @@ nPrimRoot.plant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return the number of lateral root in the plant
-nLatRoot.plant = 
+nLatRoot = 
   function(obj) 
   {
     nRoot(obj) - nPrimRoot(obj)
@@ -153,15 +154,15 @@ latLength =
 ############################################################
 
 #' Compute the length of the root based on the coordinates of its nodes
-#' @param obj of class plant
+#' @param x object of class plant
 #' @keywords rsml
 #' @return the total length of the plant roots
 length.plant = 
-  function(obj)
+  function(x)
   {
     l = 0
-    for(j in 1:nPrimRoot(obj)){
-      r <- obj$roots[[j]]
+    for(j in 1:nPrimRoot(x)){
+      r <- x$roots[[j]]
       l <- l + totalLength(r)
     }
     l
@@ -173,7 +174,7 @@ length.plant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the plant
-yrange.plant = 
+yrangePlant = 
   function(obj)
   {
     ymin = 1e9;
@@ -182,7 +183,6 @@ yrange.plant =
       r <-  obj$roots[[i]]
       ymin <- min(c(ymin, -yrange(r)))
       ymax <- max(c(ymax, -yrange(r)))
-      print(paste(ymin, "/", ymax))
       if(nChild(r) > 0){
         for(j in 1:nChild(r)){
           rr <-  r$children[[j]]
@@ -199,7 +199,7 @@ yrange.plant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(x1,x2) where x1 and x2 are the x limits of the plant
-xrange.plant = 
+xrangePlant = 
   function(obj)
   {
     xmin = 1e9;
@@ -210,7 +210,6 @@ xrange.plant =
       xmax <- max(c(xmax, xrange(r)))
       if(nChild(r) > 0){
         for(j in 1:nChild(r)){
-          print(j)
           rr <-  r$children[[j]]
           xmin <- min(c(xmin, xrange(rr)))
           xmax <- max(c(xmax, xrange(rr)))
@@ -225,7 +224,7 @@ xrange.plant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(z1,z2) where z1 and z2 are the z limits of the plant
-zrange.plant = 
+zrangePlant = 
   function(obj)
   {
     zmin = 1e9;
@@ -247,16 +246,18 @@ zrange.plant =
 ############################################################
 
 #' Plot the root system
-#' @param obj of class plant
+#' @param x object of class plant
 #' @param threed make a 3D plot for the plant
+#' @param ... plot options
 #' @keywords rsml
+#' @import rgl
 #' @return null
 plot.plant = 
-  function(obj, threed = F)
+  function(x, threed = F, ...)
   {
+    obj <- x
     if(threed){
-      library(rgl)
-      plot3d(1, 1, 1, type="n", xlim=xrange(obj), ylim=yrange(obj) , zlim=zrange(obj), ylab="", xlab="")
+      plot3d(1, 1, 1, type="n", xlim=xrangePlant(obj), ylim=yrangePlant(obj) , zlim=zrangePlant(obj), ylab="", xlab="")
       for(j in 1:nPrimRoot(obj)){
         r <- obj$roots[[j]]
         plot3d(coords(r)$x, coords(r)$y, coords(r)$z, lwd=2, col="red", type="l", add=T)
@@ -274,18 +275,18 @@ plot.plant =
         }
       }
     } else {
-      plot(1, 1, type="n", xlim=xrange(obj), ylim=yrange(obj), ylab="", xlab="")
+      plot(1, 1, type="n", xlim=xrangePlant(obj), ylim=yrangePlant(obj), ylab="", xlab="")
       for(j in 1:nPrimRoot(obj)){
         r <- obj$roots[[j]]
-        lines(coords(r)$x, coords(r)$y, lwd=2, col="red")
+        lines(coords(r)$x, -coords(r)$y, lwd=2, col="red")
         if(nChild(r) > 0){
           for(i in 1:nChild(r)){
             rr <- r$children[[i]]
-            lines(coords(rr)$x, coords(rr)$y, lwd=2, col="green")
+            lines(coords(rr)$x, -coords(rr)$y, lwd=2, col="green")
             if(nChild(rr) > 0){
               for(k in 1:nChild(rr)){
                 rrr <- rr$children[[k]]
-                lines(coords(rrr)$x, coords(rrr)$y, lwd=2, col="yellow")
+                lines(coords(rrr)$x, -coords(rrr)$y, lwd=2, col="yellow")
               }
             }
           }
@@ -296,12 +297,13 @@ plot.plant =
 
 ############################################################
 #' Summary of the plant
-#' @param obj of class node
+#' @param object object of class node
+#' @param ... summary options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 summary.plant = 
-  function(obj)
+  function(object, ...)
   {
-   
+    obj <- object
     list(
       total.length = list(value = round(length(obj), 2), unit = "cm"),
       prim.length = list(value = round(primLength(obj), 2), unit = "cm"),      
@@ -309,19 +311,21 @@ summary.plant =
       n.root = list(value = nRoot(obj), unit = "-"),
       n.prim = list(value = nPrimRoot(obj), unit = "-"),
       n.lat = list(value = nLatRoot(obj), unit = "-"),      
-      mean.insertion.angle = list(value = round(meanInsertionAngle(obj), 2), unit = "degree"),
-      mean.interbranch = list(value = round(meanInterbranch(obj), 2), unit = "root/cm")
+      mean.insertion.angle = list(value = round(meanInsertionAnglePlant(obj), 2), unit = "degree"),
+      mean.interbranch = list(value = round(meanInterbranchPlant(obj), 2), unit = "root/cm")
       )
 
   }
 
 ###########################################################
 #' Print the plant
-#' @param obj of class node
+#' @param x  object of class node
+#' @param ... print options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 print.plant = 
-  function(obj)
+  function(x, ...)
   {
+    obj <- x
     variable <- c("Total length", 
                   "Primary length", 
                   "Lateral length", 
@@ -336,8 +340,8 @@ print.plant =
                nRoot(obj),
                nPrimRoot(obj),
                nLatRoot(obj),
-               round(meanInsertionAngle(obj), 2),
-               round(meanInterbranch(obj), 2))
+               round(meanInsertionAnglePlant(obj), 2),
+               round(meanInterbranchPlant(obj), 2))
     units <- c("cm","cm","cm", "-", "-", "-", "degree", "root/cm")
     data.frame(variable, value, units)  
   }
