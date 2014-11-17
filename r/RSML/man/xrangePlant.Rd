@@ -14,5 +14,9 @@ c(x1,x2) where x1 and x2 are the x limits of the plant
 \description{
 Compute the xrange of the plant
 }
+\examples{
+data(lupin)
+xrangePlant(lupin)
+}
 \keyword{rsml}
 

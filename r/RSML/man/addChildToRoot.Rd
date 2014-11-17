@@ -16,6 +16,12 @@ the current root, with the additional child attached
 \description{
 Add a child root (lateral) to an existing root
 }
+\examples{
+data(lupin)
+current <- lupin$roots[[1]]
+child <- current$children[[1]]
+current <- addChildToRoot(current, child)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

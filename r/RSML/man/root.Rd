@@ -25,6 +25,12 @@ the root
 \description{
 Root constructor
 }
+\examples{
+r <- root()
+
+n <- node(1, 1)
+r <- root(n)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

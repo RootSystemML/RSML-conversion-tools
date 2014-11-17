@@ -14,6 +14,11 @@ the length of the root
 \description{
 Compute the length of the root based on the coordinatres of its nodes
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+length(r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

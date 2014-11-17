@@ -14,6 +14,11 @@ the mean lateral angle
 \description{
 Compute the mean insertion angle of the children (lateral) roots
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+meanInsertionAngle(r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

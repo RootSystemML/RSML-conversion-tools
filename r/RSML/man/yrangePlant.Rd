@@ -14,5 +14,9 @@ c(y1,y2) where y1 and y2 are the y limits of the plant
 \description{
 Compute the yrange of the plant
 }
+\examples{
+data(lupin)
+yrangePlant(lupin)
+}
 \keyword{rsml}
 

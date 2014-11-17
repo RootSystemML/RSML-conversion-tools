@@ -16,6 +16,11 @@ the new plant, with the added root
 \description{
 Add a root to an existing plant. Returns the plant with the added root
 }
+\examples{
+data(lupin)
+r <- root()
+lupin <- addRootToPlant(lupin, r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

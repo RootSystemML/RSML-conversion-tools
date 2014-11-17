@@ -14,6 +14,11 @@ the number of child root in the current root
 \description{
 Get the number of children in a root
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+nChild(r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

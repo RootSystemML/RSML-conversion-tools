@@ -1,17 +1,3 @@
-# New generic functions
-# nNode = function(obj) UseMethod("nNode")
-# nChild = function(obj) UseMethod("nChild")
-# totalLength = function(obj) UseMethod("totalLength")
-# coords = function(obj) UseMethod("coords")
-# yrange = function(obj) UseMethod("yrange")
-# xrange = function(obj) UseMethod("xrange")
-# zrange = function(obj) UseMethod("zrange")
-# insertionPosition = function(obj) UseMethod("insertionPosition")
-# meanInsertionAngle = function(obj) UseMethod("meanInsertionAngle")
-# meanInterbranch = function(obj, allroot) UseMethod("meanInterbranch")
-# nLatRoot = function(obj) UseMethod("nLatRoot")
-# nPrimRoot = function(obj) UseMethod("nPrimRoot")
-# 
 
 
 ######################################################################
@@ -25,6 +11,12 @@
 #' @param insertion_angle = insertion angle of the root on its parent. Can be null is no parent
 #' @return the root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
+#' @examples
+#' r <- root()
+#' 
+#' n <- node(1, 1)
+#' r <- root(n)
 root = 
   function(nodes = NULL, 
            parent = "", 
@@ -49,6 +41,13 @@ root =
 #' @param parent = the parent root
 #' @param current = the current root
 #' @return the insertion position
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' r1 <- r$children[[1]]
+#' getInsertionPosition(r, r1)
+
 getInsertionPosition = 
   function(parent, current)
   {
@@ -73,6 +72,12 @@ getInsertionPosition =
 #' @param parent = the parent root
 #' @param current = the current root
 #' @return the insertion angle, in degree
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' r1 <- r$children[[1]]
+#' getInsertionAngle(r, r1)
 getInsertionAngle = 
   function(parent, current)
   {
@@ -116,6 +121,11 @@ getInsertionAngle =
 #' @return the root, with the added node
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' n <- node(1, 1)
+#' r <- root()
+#' r <- addNodeToRoot(r, n)
 addNodeToRoot = 
   function(ro, no)
   {
@@ -131,6 +141,11 @@ addNodeToRoot =
 #' @return the number of nodes in the root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' nNode(r)
 nNode = function(obj) length(obj$nodes)
 
 ######################################################################
@@ -139,6 +154,11 @@ nNode = function(obj) length(obj$nodes)
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(x1,x2) where x1 and x2 are the x limits of the root
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' xrange(r)
 xrange = 
   function(obj)
   {
@@ -158,6 +178,11 @@ xrange =
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the root
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' yrange(r)
 yrange = 
   function(obj)
   {
@@ -178,6 +203,11 @@ yrange =
 #' @param obj of class root
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the root
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' zrange(r)
 zrange = 
   function(obj)
   {
@@ -200,6 +230,11 @@ zrange =
 #' @return the length of the root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' length(r)
 length.root = 
   function(x)
   {
@@ -215,6 +250,12 @@ length.root =
 #' @return the current root, with the additional child attached
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
+#' @examples
+#' data(lupin)
+#' current <- lupin$roots[[1]]
+#' child <- current$children[[1]]
+#' current <- addChildToRoot(current, child)
 addChildToRoot = 
   function(current, child)
   {
@@ -231,6 +272,11 @@ addChildToRoot =
 #' @return the number of child root in the current root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' nChild(r)
 nChild = function(obj) length(obj$children)
 
 ######################################################################
@@ -240,6 +286,11 @@ nChild = function(obj) length(obj$children)
 #' @return the mean lateral angle
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' meanInsertionAngle(r)
 meanInsertionAngle = 
   function(obj)
   {
@@ -259,7 +310,12 @@ meanInsertionAngle =
 #' @param allroot if true, compute the interbanch distance on the whole root
 #' @return the mean interbranch distance
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
 #' @keywords rsml
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' meanInterbranch(r)
 meanInterbranch = 
   function(obj, allroot=F)
   {
@@ -282,7 +338,12 @@ meanInterbranch =
 #' @param obj of class root
 #' @return the total lenght of the root and children
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
 #' @keywords rsml
+#' @examples
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' totalLength(r)
 totalLength = 
   function(obj)
   {
@@ -300,6 +361,9 @@ totalLength =
 #' @return a dataframe containing the node coordinates (x, y, z)
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' data(lupin)
+#' r <- lupin$roots[[1]]
+#' coords(r)
 coords = 
   function(obj)
   {

@@ -14,6 +14,9 @@ the plant
 \description{
 Plant object, containing a root system, composed of roots
 }
+\examples{
+pl <- plant()
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

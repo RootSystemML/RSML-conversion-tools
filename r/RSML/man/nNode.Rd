@@ -14,6 +14,11 @@ the number of nodes in the root
 \description{
 Get the number of nodes in a root
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+nNode(r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

@@ -14,5 +14,9 @@ the number of lateral root in the plant
 \description{
 Compute the number of lateral roots in the plant
 }
+\examples{
+data(lupin)
+nLatRoot(lupin)
+}
 \keyword{rsml}
 

@@ -3,6 +3,14 @@
 #' @param rsml.path    The path to the .rsml file. Mandatory.
 #' @keywords rsml
 #' @import XML 
+#' @export
+#' @examples
+#' path <- "http://rootsystemml.github.io/images/examples/arabidopsis-simple.rsml"
+#' pl.list <- rsmlToList(path) # import the file as a list
+#' write.csv(pl.list$processed, "rsml-table.csv") # save it as a csv table
+
+
+#' 
 rsmlToList <- function(rsml.path){
     
   rsml <- xmlToList(xmlParse(rsml.path))

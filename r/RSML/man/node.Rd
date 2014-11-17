@@ -24,6 +24,9 @@ the node
 \description{
 Node constructor
 }
+\examples{
+n <- node(1, 1)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

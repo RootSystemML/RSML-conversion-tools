@@ -14,5 +14,9 @@ c(z1,z2) where z1 and z2 are the z limits of the plant
 \description{
 Compute the zrange of the plant
 }
+\examples{
+data(lupin)
+zrangePlant(lupin)
+}
 \keyword{rsml}
 

@@ -17,5 +17,10 @@ Get the coordinates of the root nodes
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }
+\keyword{<-}
+\keyword{coords(r)}
+\keyword{data(lupin)}
+\keyword{lupin$roots[[1]]}
+\keyword{r}
 \keyword{rsml}
 

@@ -16,6 +16,11 @@ the root, with the added node
 \description{
 Add a node to an existing root
 }
+\examples{
+n <- node(1, 1)
+r <- root()
+r <- addNodeToRoot(r, n)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

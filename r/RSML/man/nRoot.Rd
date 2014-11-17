@@ -14,6 +14,10 @@ the number of root in the plant
 \description{
 Compute the total number of roots in the plant
 }
+\examples{
+data(lupin)
+nRoot(lupin)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

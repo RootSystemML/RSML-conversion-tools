@@ -16,6 +16,11 @@ the mean interbranch distance
 \description{
 Compute the mean interbranch distance of the children (lateral) roots
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+meanInterbranch(r)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

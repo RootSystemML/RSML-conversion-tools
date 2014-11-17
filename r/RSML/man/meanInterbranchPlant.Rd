@@ -16,6 +16,10 @@ the mean interbranch distance of the root system
 \description{
 Compute the mean interbranch distance of all the primary roots in the image
 }
+\examples{
+data(lupin)
+meanInterbranchPlant(lupin)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

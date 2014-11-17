@@ -13,6 +13,11 @@
 \description{
 Summary of the plant
 }
+\examples{
+data(lupin)
+sum.lup <- summary(lupin)
+sum.lup$total.length$value # Get total length
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

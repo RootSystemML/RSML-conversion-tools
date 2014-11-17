@@ -9,6 +9,9 @@
 #' @return the node
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @keywords rsml
+#' @export
+#' @examples
+#' n <- node(1, 1)
 node =
   function(x, y, z=0, diameter=0, orientation=0, bLength=0)
   {
@@ -29,6 +32,10 @@ node =
 #' @param x object of class node
 #' @param ... print options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
+#' @examples
+#' n <- node(1, 1)
+#' print(n)
 print.node = 
   function(x, ...)
   {

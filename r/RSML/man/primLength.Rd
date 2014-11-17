@@ -14,5 +14,9 @@ the total length of the primary roots
 \description{
 Compute the length of the primary root based on the coordinates of its nodes
 }
+\examples{
+data(lupin)
+primLength(lupin)
+}
 \keyword{rsml}
 

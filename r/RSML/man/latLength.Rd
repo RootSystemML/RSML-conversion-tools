@@ -14,5 +14,9 @@ the total length of the lateral roots
 \description{
 Compute the length of the lateral root based on the coordinates of its nodes
 }
+\examples{
+data(lupin)
+latLength(lupin)
+}
 \keyword{rsml}
 

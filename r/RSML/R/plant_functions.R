@@ -20,6 +20,9 @@
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the plant
+#' @export
+#' @examples
+#' pl <- plant()
 plant = 
   function(roots = NULL)
   {
@@ -36,6 +39,11 @@ plant =
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the new plant, with the added root
+#' @export
+#' @examples
+#' data(lupin)
+#' r <- root()
+#' lupin <- addRootToPlant(lupin, r)
 addRootToPlant = 
   function(pl, ro)
   {
@@ -53,6 +61,10 @@ addRootToPlant =
 #' @param allroot if true, compute the interbanch distance on the whole root
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the mean interbranch distance of the root system
+#' @export
+#' @examples
+#' data(lupin)
+#' meanInterbranchPlant(lupin)
 meanInterbranchPlant = 
   function(obj, allroot=F) 
   {
@@ -70,6 +82,10 @@ meanInterbranchPlant =
 #' @param obj of class plant
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the mean insertion angle of the root system
+#' @export
+#' @examples
+#' data(lupin)
+#' meanInsertionAnglePlant(lupin)
 meanInsertionAnglePlant = 
   function(obj) 
   {
@@ -87,6 +103,10 @@ meanInsertionAnglePlant =
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the number of root in the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' nRoot(lupin)
 nRoot = 
   function(obj) 
   {
@@ -104,6 +124,10 @@ nRoot =
 #' @keywords rsml
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 #' @return the number of primary root in the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' nPrimRoot(lupin)
 nPrimRoot = 
   function(obj) 
   {
@@ -116,6 +140,10 @@ nPrimRoot =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return the number of lateral root in the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' nLatRoot(lupin)
 nLatRoot = 
   function(obj) 
   {
@@ -129,6 +157,10 @@ nLatRoot =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return the total length of the primary roots
+#' @export
+#' @examples
+#' data(lupin)
+#' primLength(lupin)
 primLength = 
   function(obj)
   {
@@ -146,6 +178,10 @@ primLength =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return the total length of the lateral roots
+#' @export
+#' @examples
+#' data(lupin)
+#' latLength(lupin)
 latLength = 
   function(obj)
   {
@@ -157,6 +193,10 @@ latLength =
 #' @param x object of class plant
 #' @keywords rsml
 #' @return the total length of the plant roots
+#' @export
+#' @examples
+#' data(lupin)
+#' length(lupin)
 length.plant = 
   function(x)
   {
@@ -174,6 +214,10 @@ length.plant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(y1,y2) where y1 and y2 are the y limits of the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' yrangePlant(lupin)
 yrangePlant = 
   function(obj)
   {
@@ -199,6 +243,10 @@ yrangePlant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(x1,x2) where x1 and x2 are the x limits of the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' xrangePlant(lupin)
 xrangePlant = 
   function(obj)
   {
@@ -224,6 +272,10 @@ xrangePlant =
 #' @param obj of class plant
 #' @keywords rsml
 #' @return c(z1,z2) where z1 and z2 are the z limits of the plant
+#' @export
+#' @examples
+#' data(lupin)
+#' zrangePlant(lupin)
 zrangePlant = 
   function(obj)
   {
@@ -252,6 +304,15 @@ zrangePlant =
 #' @keywords rsml
 #' @import rgl
 #' @return null
+#' @export
+#' @examples
+#' # Plot 2D plant
+#' data(lupin)
+#' plot(lupin, threed=FALSE)
+#' 
+#' # Plot 3D plant
+#' data(anagallis)
+#' plot(anagallis, threed=TRUE)
 plot.plant = 
   function(x, threed = F, ...)
   {
@@ -300,6 +361,11 @@ plot.plant =
 #' @param object object of class node
 #' @param ... summary options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
+#' @examples
+#' data(lupin)
+#' sum.lup <- summary(lupin)
+#' sum.lup$total.length$value # Get total length
 summary.plant = 
   function(object, ...)
   {
@@ -322,6 +388,10 @@ summary.plant =
 #' @param x  object of class node
 #' @param ... print options
 #' @author Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
+#' @export
+#' @examples
+#' data(lupin)
+#' print(lupin)
 print.plant = 
   function(x, ...)
   {

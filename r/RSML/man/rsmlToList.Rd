@@ -11,5 +11,10 @@ rsmlToList(rsml.path)
 \description{
 Import a single RSML file into a List. Work only if the roots in the rsml file have properties associated with them.
 }
+\examples{
+path <- "http://rootsystemml.github.io/images/examples/arabidopsis-simple.rsml"
+pl.list <- rsmlToList(path) # import the file as a list
+write.csv(pl.list$processed, "rsml-table.csv") # save it as a csv table
+}
 \keyword{rsml}
 

@@ -13,6 +13,10 @@
 \description{
 Print the plant
 }
+\examples{
+data(lupin)
+print(lupin)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

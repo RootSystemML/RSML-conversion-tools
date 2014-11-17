@@ -14,5 +14,9 @@ the total length of the plant roots
 \description{
 Compute the length of the root based on the coordinates of its nodes
 }
+\examples{
+data(lupin)
+length(lupin)
+}
 \keyword{rsml}
 

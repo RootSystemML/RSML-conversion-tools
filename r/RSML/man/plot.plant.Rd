@@ -18,5 +18,14 @@ null
 \description{
 Plot the root system
 }
+\examples{
+# Plot 2D plant
+data(lupin)
+plot(lupin, threed=FALSE)
+
+# Plot 3D plant
+data(anagallis)
+plot(anagallis, threed=TRUE)
+}
 \keyword{rsml}
 

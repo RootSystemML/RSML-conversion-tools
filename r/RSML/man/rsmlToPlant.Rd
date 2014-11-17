@@ -13,6 +13,17 @@ rsmlToPlant(rsml.path, threed = FALSE)
 \description{
 Import a single RSML file into a Plant object
 }
+\examples{
+# 2D example
+path <- "http://rootsystemml.github.io/images/examples/arabidopsis-simple.rsml" # specify the path to the RSML file
+pl <- rsmlToPlant(path) # import the file as a 2D plant
+plot(pl) # plot the plant
+
+# 3D example
+path <- "http://rootsystemml.github.io/images/examples/anagallis.rsml"
+pl <- rsmlToPlant(path, threed=TRUE) # import the file as a 2D plant
+plot(pl, threed=TRUE) # plot the plant
+}
 \keyword{3d}
 \keyword{in}
 \keyword{is}

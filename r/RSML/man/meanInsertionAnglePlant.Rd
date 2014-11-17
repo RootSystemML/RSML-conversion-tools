@@ -14,6 +14,10 @@ the mean insertion angle of the root system
 \description{
 Compute the mean insertion angle of all the laterals in the plant
 }
+\examples{
+data(lupin)
+meanInsertionAnglePlant(lupin)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

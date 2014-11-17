@@ -14,6 +14,10 @@ the number of primary root in the plant
 \description{
 Compute the number of primary roots in the plant
 }
+\examples{
+data(lupin)
+nPrimRoot(lupin)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }

@@ -14,5 +14,10 @@ c(y1,y2) where y1 and y2 are the y limits of the root
 \description{
 Compute the xrange of the root
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+yrange(r)
+}
 \keyword{rsml}
 

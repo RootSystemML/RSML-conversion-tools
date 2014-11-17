@@ -16,4 +16,10 @@ the insertion angle, in degree
 \description{
 Compute the insertion angle of the root on its parent
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+r1 <- r$children[[1]]
+getInsertionAngle(r, r1)
+}
 

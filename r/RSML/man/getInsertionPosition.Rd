@@ -16,4 +16,10 @@ the insertion position
 \description{
 Compute the insertion of the root on its parent
 }
+\examples{
+data(lupin)
+r <- lupin$roots[[1]]
+r1 <- r$children[[1]]
+getInsertionPosition(r, r1)
+}
 

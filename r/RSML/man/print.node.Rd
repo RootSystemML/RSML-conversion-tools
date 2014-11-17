@@ -13,6 +13,10 @@
 \description{
 Print the node
 }
+\examples{
+n <- node(1, 1)
+print(n)
+}
 \author{
 Guillaume Lobet - guillaume.lobet(at)ulg.ac.be
 }
