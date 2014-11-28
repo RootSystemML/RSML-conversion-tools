@@ -20,7 +20,7 @@ public class RSMLGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private static RSMLGUI instance = null;
-	private JCheckBox batchExport, batchResults, batchImage, batchRealWidth, batchConvex;
+	private JCheckBox batchExport, batchResults, batchImage, batchRealWidth, batchConvex, batchSave;
 	private JTextField batchSourceFolder, batchLineWidth;
 	private JComboBox  batchJCB, batchColorJCB;
 	private JButton batchSourceButton, batchButton;	
@@ -96,6 +96,11 @@ public class RSMLGUI extends JFrame implements ActionListener {
 	      batchImage.setFont(font);
 	      batchImage.setAlignmentX(Component.LEFT_ALIGNMENT);
 	      
+	      
+	      batchSave = new JCheckBox("Save images", false);
+	      batchSave.setFont(font);
+	      batchSave.setAlignmentX(Component.LEFT_ALIGNMENT);
+	      
 	      batchButton = new JButton("Run batch export");
 	      batchButton.setFont(font);
 	      batchButton.setActionCommand("BATCH_EXPORT");
@@ -136,6 +141,8 @@ public class RSMLGUI extends JFrame implements ActionListener {
 	      trsfc3.gridx = 2;
 	      batchPanel.add(batchLineWidth, trsfc3);
 	      trsfc3.gridy = 5;
+	      trsfc3.gridx = 0;
+	      batchPanel.add(batchSave, trsfc3);	      
 	      trsfc3.gridx = 2;
 	      batchPanel.add(batchRealWidth, trsfc3);
 	      trsfc3.gridy = 6;
@@ -226,44 +233,82 @@ public class RSMLGUI extends JFrame implements ActionListener {
     		}
     	});
   	  	
-
-    	SR.write("Batch export started for "+rsml.length+" files");
-
-    	// Open the different RSML files, retriev their data and get their size.
-    	RootModel[] models = new RootModel[rsml.length];
-    	int w = 0; int h = 0;
-  	  	for(int i = 0; i < rsml.length; i++){
-  	  		models[i] = new RootModel(rsml[i].getAbsolutePath());
-  	  		if(models[i].getWidth() > w) w = models[i].getWidth();
-  	  		if(models[i].getHeight() > h) h = models[i].getHeight();
-  	  	}
-  	  	
-  	  	ResultsTable rt = new ResultsTable();
-  	  	ImageStack is= new ImageStack(w, h);
-  	  
-  	  
-  	  	for(int i = 0; i < rsml.length; i++){
-  	  		// Send the imagr to the stack
-  	  		if(batchImage.isSelected()) is.addSlice(rsml[i].getName(), 
-  	  				models[i].createImage(batchColorJCB.getSelectedIndex() == 0, 
-  	  				Integer.valueOf(batchLineWidth.getText()), batchRealWidth.isSelected(), w, h, batchConvex.isSelected()));
-  	  		// Send the results to the Result Table
-  	  		if(batchResults.isSelected()){
-  	  			int sel = batchJCB.getSelectedIndex();
-  	  			switch (sel) {  
-  	  				case 0: models[i].sendImageData(rt,  rsml[i].getName()); break;
-  	  				case 1: models[i].sendRootData(rt,  rsml[i].getName()); break;
-  	  				case 2: models[i].sendNodeData(rt, rsml[i].getName()); break;
-  	  			}
-  	  		}
-  	  	}
-  	  
-  	  	if(batchResults.isSelected()) rt.show(batchJCB.getSelectedItem().toString()+" data");
-  	  	if(batchImage.isSelected()){
-  	  		ImagePlus ip = new ImagePlus("RSML images");
-  	  		ip.setStack(is);
-  	  		ip.show();
-  	  	}
+    	if(rsml.length < 100){
+	    	SR.write("Batch export started for "+rsml.length+" files");
+	
+	    	// Open the different RSML files, retriev their data and get their size.
+	    	RootModel[] models = new RootModel[rsml.length];
+	    	int w = 0; int h = 0;
+	  	  	for(int i = 0; i < rsml.length; i++){
+	  	  		models[i] = new RootModel(rsml[i].getAbsolutePath());
+	  	  		if(models[i].getWidth(true) > w) w = models[i].getWidth(true);
+	  	  		if(models[i].getHeight(true) > h) h = models[i].getHeight(true);
+	  	  	}
+	  	  	
+	  	  	ResultsTable rt = new ResultsTable();
+	  	  	ImageStack is= new ImageStack(w, h);
+	  	  
+	  	  
+	  	  	for(int i = 0; i < rsml.length; i++){
+	  	  		// Send the imagr to the stack
+	  	  		if(batchImage.isSelected()) {
+	  	  			ImagePlus ip = new ImagePlus(rsml[i].getName(),models[i].createImage(batchColorJCB.getSelectedIndex() == 0, Integer.valueOf(batchLineWidth.getText()), batchRealWidth.isSelected(), w, h, batchConvex.isSelected()));  
+	  	  			is.addSlice(ip.getProcessor());
+	  	  	  		// Save a single image
+	  	  	  		if(batchSave.isSelected()){
+	  	  	  			IJ.save(ip, this.batchSourceFolder.getText()+"/images/"+rsml[i].getName()+".jpg");
+	
+	  	  	  		}
+	  	  		}
+		  	  	if(!batchImage.isSelected() && batchSave.isSelected()){
+		  	  		SR.write(rsml[i].getName());
+	  	  			ImagePlus ip = new ImagePlus(rsml[i].getName(),models[i].createImage(batchColorJCB.getSelectedIndex() == 0, Integer.valueOf(batchLineWidth.getText()), batchRealWidth.isSelected(), batchConvex.isSelected()));  
+		  	  		IJ.save(ip, this.batchSourceFolder.getText()+"/images/"+rsml[i].getName()+".jpg");
+		  	  	}	 	  		
+	  	  		
+	  	  		// Send the results to the Result Table
+	  	  		if(batchResults.isSelected()){
+	  	  			int sel = batchJCB.getSelectedIndex();
+	  	  			switch (sel) {  
+	  	  				case 0: models[i].sendImageData(rt,  rsml[i].getName()); break;
+	  	  				case 1: models[i].sendRootData(rt,  rsml[i].getName()); break;
+	  	  				case 2: models[i].sendNodeData(rt, rsml[i].getName()); break;
+	  	  			}
+	  	  		}
+	  	  	}
+	  	  
+	  	  	if(batchResults.isSelected()) rt.show(batchJCB.getSelectedItem().toString()+" data");
+	  	  	if(batchImage.isSelected()){
+	  	  		ImagePlus ip = new ImagePlus("RSML images");
+	  	  		ip.setStack(is);
+	  	  		ip.show();
+	  	  	}			
+    	}
+    	else{
+	    	SR.write("Batch export started for "+rsml.length+" files");
+	  	  	ResultsTable rt = new ResultsTable();
+	    	// Open the different RSML files, retriev their data and get their size.
+	    	RootModel model;
+	  	  	for(int i = 0; i < rsml.length; i++){
+	  	  		model = new RootModel(rsml[i].getAbsolutePath());
+		  	  	if(batchSave.isSelected()){
+	  	  			ImagePlus ip = new ImagePlus(rsml[i].getName(),model.createImage(batchColorJCB.getSelectedIndex() == 0, Integer.valueOf(batchLineWidth.getText()), batchRealWidth.isSelected(), batchConvex.isSelected()));  
+		  	  		IJ.save(ip, this.batchSourceFolder.getText()+"/images/"+rsml[i].getName()+".jpg");
+		  	  	}	 	  		
+	  	  		
+	  	  		// Send the results to the Result Table
+	  	  		if(batchResults.isSelected()){
+	  	  			int sel = batchJCB.getSelectedIndex();
+	  	  			switch (sel) {  
+	  	  				case 0: model.sendImageData(rt,  rsml[i].getName()); break;
+	  	  				case 1: model.sendRootData(rt,  rsml[i].getName()); break;
+	  	  				case 2: model.sendNodeData(rt, rsml[i].getName()); break;
+	  	  			}
+	  	  		}
+	  	  	}
+    		rt.show(batchJCB.getSelectedItem().toString());
+    	}
+    	
   	  	SR.write("Export done for "+rsml.length+" files"); 
     }      
 }

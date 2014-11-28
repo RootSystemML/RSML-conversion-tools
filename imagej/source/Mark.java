@@ -7,7 +7,8 @@ import java.awt.geom.GeneralPath;
 import javax.swing.Icon;
 
 /**
- *  @author Xavier Draye and Guillaume Lobet - Université catholique de Louvain 
+ * @author Xavier Draye - Université catholique de Louvain
+ * @author Guillaume Lobet - Université de Liège 
  * Class for the Marks objects
  * */
 

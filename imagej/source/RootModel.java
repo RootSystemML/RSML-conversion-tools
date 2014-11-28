@@ -320,7 +320,7 @@ class RootModel extends WindowAdapter{
 	   rt.incrementCounter();	
 	   rt.addValue("image",name);
 	   rt.addValue("tot_root_length",getTotalRLength());
-	   rt.addValue("convexhull_area",getConvexHullArea());
+	   //rt.addValue("convexhull_area",getConvexHullArea());
 	   // Primary roots
 	   rt.addValue("n_primary",getNPRoot());
 	   rt.addValue("tot_prim_length",getTotalPRLength());
@@ -332,6 +332,7 @@ class RootModel extends WindowAdapter{
 	   rt.addValue("tot_lat_length",getTotalSRLength());
 	   rt.addValue("mean_lat_length",getAvgSRLength());
 	   rt.addValue("mean_lat_diameter",getAvgSRDiam());	   
+	   rt.addValue("mean_lat_angle",this.getAvgSRInsAng());	   
 	 }
    
    /**
@@ -461,6 +462,7 @@ class RootModel extends WindowAdapter{
 					nodeMeta = nodeMeta.getNextSibling();
 			   }
 			   dpi = getDPI(unit, res);
+			   SR.write("resolution = "+dpi);
 			   pixelSize = 2.54f / dpi;
 		   }
 		         
@@ -918,13 +920,51 @@ class RootModel extends WindowAdapter{
     	
     	return coord;
     }
-    
+
+
+    /**
+     * Get the widht of the tracing
+     * @return
+     */
+    public int getMinY(){
+    	float min = 1e5f; 
+    	Root r;
+    	Node n;
+    	for(int i = 0; i < rootList.size(); i++){
+    		r = rootList.get(i);
+			n = r.firstNode;
+			while(n.child != null){
+				if(n.y < min) min = n.y;
+				n = n.child;
+			}
+    	}
+    	return (int) min;
+    }
+
+    /**
+     * Get the widht of the tracing
+     * @return
+     */
+    public int getMinX(){
+    	float min = 1e5f; 
+    	Root r;
+    	Node n;
+    	for(int i = 0; i < rootList.size(); i++){
+    		r = rootList.get(i);
+			n = r.firstNode;
+			while(n.child != null){
+				if(n.x < min) min = n.x;
+				n = n.child;
+			}
+    	}
+    	return (int) min;
+    }    
     
     /**
      * Get the widht of the tracing
      * @return
      */
-    public int getWidth(){
+    public int getWidth(boolean add){
     	float min = 1e5f, max = 0; 
     	Root r;
     	Node n;
@@ -937,14 +977,15 @@ class RootModel extends WindowAdapter{
 				n = n.child;
 			}
     	}
-    	return (int)(max+min);
+    	if(add) return (int)(max+min);
+    	else return (int)(max-min);
     }
     
     /**
      * Get the height of the tracing
      * @return
      */
-    public int getHeight(){
+    public int getHeight(boolean add){
     	float min = 1e5f, max = 0; 
     	Root r;
     	Node n;
@@ -957,7 +998,8 @@ class RootModel extends WindowAdapter{
 				n = n.child;
 			}
     	}
-    	return (int)(max+min);
+    	if(add) return (int)(max+min);
+    	else return (int)(max-min);    
     }
 
   
@@ -991,9 +1033,9 @@ class RootModel extends WindowAdapter{
 			
 			if(color){
 				switch(r.isChild()){
-					case 0: tracing.setColor(Color.orange); break;
+					case 0: tracing.setColor(Color.red); break;
 					case 1: tracing.setColor(Color.green); break;
-					case 2: tracing.setColor(Color.yellow); break;
+					case 2: tracing.setColor(Color.blue); break;
 				}
 			}
 			else tracing.setColor(Color.black);
@@ -1003,7 +1045,7 @@ class RootModel extends WindowAdapter{
 				n = n.child;
 				if(real) tracingP.setLineWidth((int) n.diameter);
 				else tracingP.setLineWidth(line);
-		    	tracingP.drawLine((int) n1.x, (int) n1.y, (int) n.x, (int) n.y);
+		    	tracingP.drawLine((int) (n1.x), (int) (n1.y), (int) (n.x), (int) (n.y));
 			}
 			tracing.setProcessor(tracingP);
 			if(convexhull){
@@ -1025,7 +1067,74 @@ class RootModel extends WindowAdapter{
     	return tracingP;
     }
     
+    /**
+     * Create an image processor based on the roots contained into the root system
+     * @param color
+     * @param line
+     * @param real
+     * @param w
+     * @param h
+     * @param convexhull
+     * @return
+     */
+    public ImageProcessor createImage(boolean color, int line, boolean real, boolean convexhull){
+    	
+    	Root r;
+    	Node n, n1;
+    	ImagePlus tracing;
 
+    	int w = getWidth(false);
+    	int h = getHeight(true);
+    	    	
+    	if(color) tracing = IJ.createImage("tracing", "RGB", w+100, h+100, 1);
+    	else tracing = IJ.createImage("tracing", "8-bit", w+100, h+100, 1);
+  
+        	
+    	ImageProcessor tracingP = tracing.getProcessor();    	
+    	
+	    //if(name == null) fit.checkImageProcessor();
+    	for(int i = 0; i < rootList.size(); i++){
+			r =  (Root) rootList.get(i);
+			n = r.firstNode;
+			
+			if(color){
+				switch(r.isChild()){
+					case 0: tracing.setColor(Color.red); break;
+					case 1: tracing.setColor(Color.green); break;
+					case 2: tracing.setColor(Color.blue); break;
+				}
+			}
+			else tracing.setColor(Color.black);
+			
+			while(n.child != null){
+				n1 = n;
+				n = n.child;
+				if(real) tracingP.setLineWidth((int) n.diameter);
+				else tracingP.setLineWidth(line);
+		    	tracingP.drawLine((int) (n1.x-getMinX()+50), (int) (n1.y-getMinY()+50), (int) (n.x-getMinX()+50), (int) (n.y-getMinY()+50));
+			}
+			tracing.setProcessor(tracingP);
+			if(convexhull){
+				if(r.isChild() == 0){
+					tracing.setColor(Color.red);
+					PolygonRoi ch = r.getConvexHull();
+		    		int[] xRoi = ch.getXCoordinates();
+		    		int[] yRoi = ch.getYCoordinates();
+		    		Rectangle rect = ch.getBounds();		
+		    		for(int j = 1 ; j < xRoi.length; j++){
+		    			tracingP.drawLine(xRoi[j-1]+rect.x, yRoi[j-1]+rect.y, xRoi[j]+rect.x, yRoi[j]+rect.y);
+		    		}
+	    			tracingP.drawLine(xRoi[xRoi.length-1]+rect.x, yRoi[xRoi.length-1]+rect.y, xRoi[0]+rect.x, yRoi[0]+rect.y);
+				}
+			}
+			tracingP = tracing.getProcessor();
+    	}
+    	
+    	return tracingP;
+    }
+    
+    
+    
     /**
      * Get the index of the po accession
      * @param po
