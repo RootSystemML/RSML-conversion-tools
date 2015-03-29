@@ -13,7 +13,7 @@ for key, value in metadata.iteritems():
 
 # Packages list, namespace and root directory of packages
 
-kgs = [pkg for pkg in find_packages('src')]
+pkgs = [pkg for pkg in find_packages('src')]
 packages = pkgs
 package_dir = dict([('', 'src')] + [(pkg, "src/" + pkg) for pkg in pkgs])
 
